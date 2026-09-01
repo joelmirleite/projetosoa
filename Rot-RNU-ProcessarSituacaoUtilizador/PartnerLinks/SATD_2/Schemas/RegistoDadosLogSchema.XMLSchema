@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:schemaEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:schema><![CDATA[<xsd:schema targetNamespace="http://xmlns.dmm.spms.pt/201310/RegistoDadosLog" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:rdl="http://xmlns.dmm.spms.pt/201310/RegistoDadosLog" xmlns:req="http://xmlns.dmm.spms.pt/201310/RequestStructure" xmlns:res="http://xmlns.dmm.spms.pt/201310/ResponseStructure" xmlns:int="http://xmlns.dmm.spms.pt/201207/Integration">
+  <xsd:import schemaLocation="RequestStructure.xsd" namespace="http://xmlns.dmm.spms.pt/201310/RequestStructure"/>
+  <xsd:import schemaLocation="Integration.xsd" namespace="http://xmlns.dmm.spms.pt/201207/Integration"/>
+  <xsd:import namespace="http://xmlns.dmm.spms.pt/201310/ResponseStructure" schemaLocation="ResponseStructure.xsd"/>
+  <xsd:element name="RegistoDadosLogProcessRequest" type="rdl:RegistoDadosLogProcessRequestType"/>
+  <xsd:element name="RegistoDadosLogProcessResponse" type="rdl:RegistoDadosLogProcessResponseType"/>
+  <xsd:complexType name="RegistoDadosLogProcessRequestType">
+    <xsd:sequence>
+      <xsd:element name="MessageHeader" type="int:CabecalhoType" minOccurs="1" maxOccurs="1" nillable="true"/>
+      <xsd:element name="MessageBody" type="rdl:RegistoDadosLogMessageBodyInputType" minOccurs="1" maxOccurs="1" nillable="true"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="RegistoDadosLogMessageBodyInputType">
+    <xsd:sequence>
+      <xsd:element name="RequestBody" type="req:RequestBodyType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="RegistoDadosLogProcessResponseType">
+    <xsd:sequence>
+      <xsd:element name="MessageHeader" type="int:CabecalhoType" minOccurs="1" maxOccurs="1" nillable="true"/>
+      <xsd:element name="MessageBody" type="rdl:RegistoDadosLogMessageBodyOutputType" minOccurs="1" maxOccurs="1" nillable="true"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="RegistoDadosLogMessageBodyOutputType">
+    <xsd:sequence>
+      <xsd:element name="ResponseResult" type="res:ResponseBodyType" minOccurs="1" maxOccurs="1" nillable="false"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>]]></con:schema>
+    <con:dependencies>
+        <con:import namespace="http://xmlns.dmm.spms.pt/201310/RequestStructure" schemaLocation="RequestStructure.xsd" ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Schemas/RequestStructure"/>
+        <con:import namespace="http://xmlns.dmm.spms.pt/201207/Integration" schemaLocation="Integration.xsd" ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Schemas/Integration"/>
+        <con:import namespace="http://xmlns.dmm.spms.pt/201310/ResponseStructure" schemaLocation="ResponseStructure.xsd" ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Schemas/ResponseStructure"/>
+    </con:dependencies>
+    <con:targetNamespace>http://xmlns.dmm.spms.pt/201310/RegistoDadosLog</con:targetNamespace>
+</con:schemaEntry>

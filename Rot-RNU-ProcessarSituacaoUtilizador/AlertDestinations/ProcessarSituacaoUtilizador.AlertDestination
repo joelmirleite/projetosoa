@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:alertDestinationEntry xmlns:con="http://www.bea.com/wli/sb/alert/destination/config">
+    <con:destination>
+        <con:name>ProcessarSituacaoUtilizador</con:name>
+        <con:description>Destino de alertas do servico ProcessarSituacaoUtilizador</con:description>
+        <con:configuration>
+            <con:level>critical</con:level>
+            <con:destination-name>ProcessarSituacaoUtilizador</con:destination-name>
+        </con:configuration>
+    </con:destination>
+</con:alertDestinationEntry>

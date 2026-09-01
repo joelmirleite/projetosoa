@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:businessServiceEntry xmlns:con="http://xmlns.oracle.com/servicebus/business/config" xmlns:oper="http://xmlns.oracle.com/servicebus/business/operations">
+    <con:coreEntry>
+        <con1:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://xmlns.oracle.com/servicebus/business/config">
+            <con:wsdl ref="Rot-RNU-ProcessarSituacaoUtilizador/Resources/WSDLs/ProcessarSituacaoUtilizador"/>
+            <con:port>
+                <con:name>ProcessarSituacaoUtilizadorPort</con:name>
+                <con:namespace>http://igif.min-saude.pt/rnu/processarsituacaoutilizador</con:namespace>
+            </con:port>
+            <con:WSI-compliant>false</con:WSI-compliant>
+        </con1:binding>
+        <oper:operations enabled="true">
+            <oper:throttling enabled="false">
+                <oper:capacity>0</oper:capacity>
+                <oper:maxQueueLength>0</oper:maxQueueLength>
+                <oper:timeToLive>0</oper:timeToLive>
+            </oper:throttling>
+            <oper:monitoring enabled="false" aggregationInterval="10"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:resultCachingEnabled>true</oper:resultCachingEnabled>
+        </oper:operations>
+        <con:ws-policy xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+        </con:ws-policy>
+        <con:result-caching isSupported="false"/>
+    </con:coreEntry>
+    <con:endpointConfig xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <tran:provider-id>http</tran:provider-id>
+        <tran:inbound>false</tran:inbound>
+        <tran:URI weight="0">
+            <env:value>http://10.204.1.97:8011/Interno/RNU/ProcessarSituacaoUtilizador/1.00</env:value>
+        </tran:URI>
+        <tran:outbound-properties>
+            <tran:load-balancing-algorithm>round-robin</tran:load-balancing-algorithm>
+            <tran:retry-count>0</tran:retry-count>
+            <tran:retry-interval>0</tran:retry-interval>
+            <tran:retry-application-errors>true</tran:retry-application-errors>
+            <tran:delay-interval-configuration isEnabled="false">
+                <tran:delay-interval>0</tran:delay-interval>
+            </tran:delay-interval-configuration>
+        </tran:outbound-properties>
+        <tran:provider-specific xsi:type="http:HttpEndPointConfiguration">
+            <http:outbound-properties>
+                <http:request-method>POST</http:request-method>
+                <http:timeout>0</http:timeout>
+                <http:connection-timeout>0</http:connection-timeout>
+                <http:follow-redirects>false</http:follow-redirects>
+                <http:chunked-streaming-mode>false</http:chunked-streaming-mode>
+            </http:outbound-properties>
+            <http:dispatch-policy>SBDefaultResponseWorkManager</http:dispatch-policy>
+        </tran:provider-specific>
+    </con:endpointConfig>
+</con:businessServiceEntry>

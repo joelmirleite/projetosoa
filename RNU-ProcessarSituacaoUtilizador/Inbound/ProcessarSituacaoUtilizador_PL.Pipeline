@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="RNU-ProcessarSituacaoUtilizador/Resources/WSDLs/ProcessarSituacaoUtilizador"/>
+            <con:binding>
+                <con:name>ProcessarSituacaoUtilizadorBinding</con:name>
+                <con:namespace>http://igif.min-saude.pt/rnu/processarsituacaoutilizador</con:namespace>
+            </con:binding>
+        </con:binding>
+        <oper:operations>
+            <oper:monitoring enabled="true" aggregationInterval="10" level="pipeline"/>
+            <oper:tracingEnabled>false</oper:tracingEnabled>
+            <oper:reporting>true</oper:reporting>
+            <oper:logging enabled="true" level="debug"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:pipeline-alerting enabled="true" level="normal"/>
+        </oper:operations>
+    </con:coreEntry>
+    <con:router errorHandler="_onErrorHandler-ProcessarSituacaoUtilizador" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/typesystem/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config">
+        <con:pipeline type="error" name="_onErrorHandler-ProcessarSituacaoUtilizador">
+            <con:stage name="ErrorHandler">
+                <con:context>
+                    <con1:varNsDecl namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" prefix="tns"/>
+                    <con1:varNsDecl namespace="http://www.bea.com/wli/sb/context" prefix="ctx"/>
+                </con:context>
+                <con:actions>
+                    <con4:log>
+                        <con1:id>LogError_Action</con1:id>
+                        <con4:logLevel>error</con4:logLevel>
+                        <con4:expr>
+                            <con1:xqueryText>fn:concat('[ProcessarSituacaoUtilizador_PL] Erro: ', $fault/ctx:reason/text())</con1:xqueryText>
+                        </con4:expr>
+                        <con4:message>[ProcessarSituacaoUtilizador] Error Handler</con4:message>
+                    </con4:log>
+                    <con3:replace varName="body" contents-only="true">
+                        <con1:id>BuildErrorResponse</con1:id>
+                        <con3:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con3:location>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:Resultados>
+        <tns:Resultado>
+            <tns:NNU>0</tns:NNU>
+            <tns:codigoErro>-1</tns:codigoErro>
+            <tns:mensagemErro>{fn:concat('Erro no processamento: ', $fault/ctx:reason/text())}</tns:mensagemErro>
+        </tns:Resultado>
+    </tns:Resultados>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:replace>
+                    <con3:ifThenElse>
+                        <con1:id>CheckErrorCode</con1:id>
+                        <con3:case>
+                            <con3:condition>
+                                <con1:xqueryText>fn:contains(data($fault/ctx:errorCode), '386200')</con1:xqueryText>
+                            </con3:condition>
+                            <con3:actions>
+                                <con3:replace contents-only="true" varName="body">
+                                    <con1:id>SetCod_386200</con1:id>
+                                    <con3:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                    </con3:location>
+                                    <con3:expr>
+                                        <con1:xqueryText>string('20000403')</con1:xqueryText>
+                                    </con3:expr>
+                                </con3:replace>
+                                <con3:replace contents-only="true" varName="body">
+                                    <con1:id>SetMsg_386200</con1:id>
+                                    <con3:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                    </con3:location>
+                                    <con3:expr>
+                                        <con1:xqueryText>string('Credenciais Invalidas')</con1:xqueryText>
+                                    </con3:expr>
+                                </con3:replace>
+                            </con3:actions>
+                        </con3:case>
+                        <con3:case>
+                            <con3:condition>
+                                <con1:xqueryText>fn:contains(data($fault/ctx:reason), 'Unable to convert') or fn:contains(data($fault/ctx:reason), 'Invalid ISO8601') or fn:contains(data($fault/ctx:reason), 'parsing XML representing a Java object')</con1:xqueryText>
+                            </con3:condition>
+                            <con3:actions>
+                                <con3:replace contents-only="true" varName="body">
+                                    <con1:id>SetCod_Convert</con1:id>
+                                    <con3:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                    </con3:location>
+                                    <con3:expr>
+                                        <con1:xqueryText>string('20000422')</con1:xqueryText>
+                                    </con3:expr>
+                                </con3:replace>
+                                <con3:replace contents-only="true" varName="body">
+                                    <con1:id>SetMsg_Convert</con1:id>
+                                    <con3:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                    </con3:location>
+                                    <con3:expr>
+                                        <con1:xqueryText>string('Campo esta no formato errado')</con1:xqueryText>
+                                    </con3:expr>
+                                </con3:replace>
+                            </con3:actions>
+                        </con3:case>
+                    </con3:ifThenElse>
+                    <con1:reply>
+                        <con1:id>ReplyWithError</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="request" name="ValidacaoDados_request">
+            <con:stage name="ValidarDadosObrigatorios">
+                <con:context>
+                    <con1:varNsDecl namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" prefix="tns"/>
+                </con:context>
+                <con:actions>
+                    <con3:assign varName="requestValido">
+                        <con1:id>FilterValidUtentes</con1:id>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<tns:ClassificarUtentesRequest xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:Utentes>
+        {
+            for $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente
+            where fn:string($u/tns:NNU) ne "" and fn:string($u/tns:dataNascimento) ne "" and fn:string($u/tns:situacaoUtilizador) ne ""
+            return $u
+        }
+    </tns:Utentes>
+</tns:ClassificarUtentesRequest>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con3:assign varName="erros">
+                        <con1:id>BuildValidationErrors</con1:id>
+                        <con3:expr>
+                            <con1:xqueryText><![CDATA[<tns:Resultados xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    {
+        for $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente
+        where fn:string($u/tns:NNU) = "" or fn:string($u/tns:dataNascimento) = "" or fn:string($u/tns:situacaoUtilizador) = ""
+        return
+            <tns:Resultado>
+                <tns:NNU>{if (fn:string($u/tns:NNU) ne "") then xs:long($u/tns:NNU) else 0}</tns:NNU>
+                <tns:codigoErro>400</tns:codigoErro>
+                <tns:mensagemErro>Campos obrigatorios em falta (NNU, dataNascimento, situacaoUtilizador)</tns:mensagemErro>
+            </tns:Resultado>
+    }
+</tns:Resultados>]]></con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                    <con3:ifThenElse>
+                        <con1:id>CheckAllInvalid</con1:id>
+                        <con3:case>
+                            <con3:condition>
+                                <con1:xqueryText>count($requestValido/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente) = 0 and count($erros/tns:Resultado) > 0</con1:xqueryText>
+                            </con3:condition>
+                            <con3:actions>
+                                <con3:replace varName="body" contents-only="true">
+                                    <con1:id>ReturnValidationErrors</con1:id>
+                                    <con3:location>
+                                        <con1:xpathText>.</con1:xpathText>
+                                    </con3:location>
+                                    <con3:expr>
+                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:Resultados>
+        { $erros/tns:Resultado }
+    </tns:Resultados>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                    </con3:expr>
+                                </con3:replace>
+                                <con1:reply>
+                                    <con1:id>ReplyValidationErrors</con1:id>
+                                </con1:reply>
+                            </con3:actions>
+                        </con3:case>
+                    </con3:ifThenElse>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="ValidacaoDados_response"/>
+        <con:flow>
+            <con:pipeline-node name="ValidacaoDados">
+                <con:request>ValidacaoDados_request</con:request>
+                <con:response>ValidacaoDados_response</con:response>
+            </con:pipeline-node>
+            <con:route-node name="RouteToBS">
+                <con:context>
+                    <con1:varNsDecl namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" prefix="tns"/>
+                    <con1:varNsDecl namespace="http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador" prefix="db"/>
+                    <con1:varNsDecl namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" prefix="oas"/>
+                </con:context>
+                <con:actions>
+                    <con5:route>
+                        <con1:id>RouteToProcessarSituacaoUtilizador_BS</con1:id>
+                        <con5:service ref="RNU-ProcessarSituacaoUtilizador/Outbound/ProcessarSituacaoUtilizador_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con5:operation>ProcessarSituacaoUtilizador</con5:operation>
+                        <con5:outboundTransform>
+                            <con3:replace varName="body" contents-only="true">
+                                <con1:id>TransformRequestToDB</con1:id>
+                                <con3:location>
+                                    <con1:xpathText>.</con1:xpathText>
+                                </con3:location>
+                                <con3:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="RNU-ProcessarSituacaoUtilizador/Resources/Transformations/RequestToDBInput"/>
+                                        <con1:param name="classificarUtentesRequest">
+                                            <con1:path>$requestValido/tns:ClassificarUtentesRequest</con1:path>
+                                        </con1:param>
+                                        <con1:param name="entidade">
+                                            <con1:path>if (exists($header/oas:Security/oas:UsernameToken/oas:Username)) then string($header/oas:Security/oas:UsernameToken/oas:Username) else 'RNU-ProcessarSituacaoUtilizador'</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con3:expr>
+                            </con3:replace>
+                        </con5:outboundTransform>
+                        <con5:responseTransform>
+                            <con4:log>
+                                <con1:id>LogDBOutput</con1:id>
+                                <con4:logLevel>warning</con4:logLevel>
+                                <con4:expr>
+                                    <con1:xqueryText>$body</con1:xqueryText>
+                                </con4:expr>
+                                <con4:message>[ProcessarSituacaoUtilizador] DB Output (raw)</con4:message>
+                            </con4:log>
+                            <con3:replace varName="body" contents-only="true">
+                                <con1:id>TransformDBToResponse</con1:id>
+                                <con3:location>
+                                    <con1:xpathText>.</con1:xpathText>
+                                </con3:location>
+                                <con3:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="RNU-ProcessarSituacaoUtilizador/Resources/Transformations/DBOutputToResponse"/>
+                                        <con1:param name="outputParameters">
+                                            <con1:path>$body/db:OutputParameters</con1:path>
+                                        </con1:param>
+                                        <con1:param name="erros">
+                                            <con1:path>$erros</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con3:expr>
+                            </con3:replace>
+                            <con4:log>
+                                <con1:id>AuditLogResultados</con1:id>
+                                <con4:logLevel>warning</con4:logLevel>
+                                <con4:expr>
+                                    <con1:xqueryText><![CDATA[fn:string-join(
+    for $r in $body/tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado
+    return fn:concat(
+        '[AUDIT] NNU=', fn:data($r/tns:NNU),
+        ' codigoResposta=', fn:string($r/tns:codigoResposta),
+        ' mensagemResposta=', fn:string($r/tns:mensagemResposta),
+        ' codigoErro=', fn:string($r/tns:codigoErro),
+        ' mensagemErro=', fn:string($r/tns:mensagemErro)
+    ),
+    ' | '
+)]]></con1:xqueryText>
+                                </con4:expr>
+                                <con4:message>[ProcessarSituacaoUtilizador] Auditoria por utente</con4:message>
+                            </con4:log>
+                        </con5:responseTransform>
+                    </con5:route>
+                </con:actions>
+            </con:route-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>

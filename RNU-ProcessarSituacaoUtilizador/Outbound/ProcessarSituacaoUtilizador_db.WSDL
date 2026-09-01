@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:wsdlEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:wsdl><![CDATA[<definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador" name="ProcessarSituacaoUtilizador-concrete" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador" location="../PartnerLinks/ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador.wsdl"/>
+  <binding name="ProcessarSituacaoUtilizador_ptt-binding" type="tns:ProcessarSituacaoUtilizador_ptt">
+     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ProcessarSituacaoUtilizador">
+      <soap:operation soapAction="ProcessarSituacaoUtilizador"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="ProcessarSituacaoUtilizador-service">
+    <port name="ProcessarSituacaoUtilizador-port" binding="tns:ProcessarSituacaoUtilizador_ptt-binding">
+      <soap:address location="jca://eis/DB/RNU"/>
+    </port>
+  </service>
+</definitions>]]></con:wsdl>
+    <con:dependencies>
+        <con:import location="../PartnerLinks/ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador.wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador">
+            <con:wsdl ref="RNU-ProcessarSituacaoUtilizador/PartnerLinks/ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador"/>
+        </con:import>
+    </con:dependencies>
+    <con:targetNamespace>http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador</con:targetNamespace>
+</con:wsdlEntry>

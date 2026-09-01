@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:wsdlEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:wsdl><![CDATA[<wsdl:definitions name="RegistoDadosLog" targetNamespace="http://xmlns.dmm.spms.pt/201207/RegistoDadosLog" xmlns:client="http://xmlns.dmm.spms.pt/201207/RegistoDadosLog" xmlns:ns1="http://xmlns.dmm.spms.pt/201310/RegistoDadosLog" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <plnk:partnerLinkType name="RegistoDadosLog">
+    <plnk:role name="RegistoDadosLogProvider" portType="client:RegistoDadosLog"/>
+  </plnk:partnerLinkType>
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://xmlns.dmm.spms.pt/201310/RegistoDadosLog" schemaLocation="Schemas/RegistoDadosLogSchema.xsd"/>
+    </schema>
+  </wsdl:types>
+  <wsdl:message name="RegistoDadosLogRequestMessage">
+    <wsdl:part element="ns1:RegistoDadosLogProcessRequest" name="payload"/>
+  </wsdl:message>
+  <wsdl:message name="RegistoDadosLogResponseMessage">
+    <wsdl:part element="ns1:RegistoDadosLogProcessResponse" name="payload"/>
+  </wsdl:message>
+  <wsdl:portType name="RegistoDadosLogPort">
+    <wsdl:operation name="process">
+      <wsdl:input message="client:RegistoDadosLogRequestMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RegistoDadosLogPortSOAP11Binding" type="client:RegistoDadosLogPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="process">
+      <soap:operation soapAction="http://xmlns.dmm.spms.pt/201207/RegistoDadosLog/process"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RegistoDadosLogPortSOAP11BindingQSService">
+    <wsdl:documentation>OSB Service</wsdl:documentation>
+    <wsdl:port binding="client:RegistoDadosLogPortSOAP11Binding" name="RegistoDadosLogPortSOAP11BindingQSPort">
+      <soap:address location="https://webservices-osbi-qa.dc.min-saude.pt:8089/Interno/SATD/RegistoDadosLog/2.10"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:wsdl>
+    <con:dependencies>
+        <con:schemaRef isInclude="false" schemaLocation="Schemas/RegistoDadosLogSchema.xsd" namespace="http://xmlns.dmm.spms.pt/201310/RegistoDadosLog" ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Schemas/RegistoDadosLogSchema"/>
+    </con:dependencies>
+    <con:targetNamespace>http://xmlns.dmm.spms.pt/201207/RegistoDadosLog</con:targetNamespace>
+</con:wsdlEntry>

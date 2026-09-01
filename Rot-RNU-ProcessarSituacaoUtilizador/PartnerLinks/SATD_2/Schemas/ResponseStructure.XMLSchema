@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:schemaEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:schema><![CDATA[<xsd:schema targetNamespace="http://xmlns.dmm.spms.pt/201310/ResponseStructure"
+	elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:res="http://xmlns.dmm.spms.pt/201310/ResponseStructure"
+	xmlns:ent="http://xmlns.satd.acss.ms.pt/Entity" xmlns:cod="http://xmlns.satd.acss.ms.pt/Code">
+
+	<xsd:element name="ResponseBody" type="res:ResponseBodyType" />
+
+	<xsd:complexType name="ResponseBodyType">
+		<xsd:sequence maxOccurs="1">
+			<xsd:element name="Id" type="xsd:decimal" minOccurs="0"
+				maxOccurs="1" nillable="false" />
+			<xsd:element name="ResponseState" minOccurs="1"
+				maxOccurs="1" nillable="false" type="res:ResponseStateType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ResponseStateType">
+		<xsd:sequence maxOccurs="1">
+			<xsd:element name="State" nillable="false" maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="Success" />
+						<xsd:enumeration value="Unsuccess" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Message" nillable="true" minOccurs="0"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="4000" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="CreatedDate" nillable="true"
+				maxOccurs="1" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:dateTime" />
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="CreatedBy" maxOccurs="1" nillable="true"
+				minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="50" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>]]></con:schema>
+    <con:targetNamespace>http://xmlns.dmm.spms.pt/201310/ResponseStructure</con:targetNamespace>
+</con:schemaEntry>

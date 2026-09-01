@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:wsdlEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:wsdl><![CDATA[<?binding.jca ProcessarSituacaoUtilizador_db.jca?><wsdl:definitions name="ProcessarSituacaoUtilizador" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador" xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+    <plt:partnerLinkType name="ProcessarSituacaoUtilizador_plt">
+        <plt:role name="ProcessarSituacaoUtilizador_role">
+            <plt:portType name="tns:ProcessarSituacaoUtilizador_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador" schemaLocation="ProcessarSituacaoUtilizador_sp.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="args_in_msg">
+        <wsdl:part name="InputParameters" element="db:InputParameters"/>
+    </wsdl:message>
+    <wsdl:message name="args_out_msg">
+        <wsdl:part name="OutputParameters" element="db:OutputParameters"/>
+    </wsdl:message>
+    <wsdl:portType name="ProcessarSituacaoUtilizador_ptt">
+        <wsdl:operation name="ProcessarSituacaoUtilizador">
+            <wsdl:input message="tns:args_in_msg"/>
+            <wsdl:output message="tns:args_out_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>]]></con:wsdl>
+    <con:dependencies>
+        <con:schemaRef isInclude="false" schemaLocation="ProcessarSituacaoUtilizador_sp.xsd" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador" ref="RNU-ProcessarSituacaoUtilizador/PartnerLinks/ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador_sp"/>
+    </con:dependencies>
+    <con:targetNamespace>http://xmlns.oracle.com/pcbpel/adapter/db/RNU-ProcessarSituacaoUtilizador/RNU-ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador</con:targetNamespace>
+</con:wsdlEntry>

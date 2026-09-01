@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="Rot-RNU-ProcessarSituacaoUtilizador/Resources/WSDLs/ProcessarSituacaoUtilizador"/>
+            <con:binding>
+                <con:name>ProcessarSituacaoUtilizadorBinding</con:name>
+                <con:namespace>http://igif.min-saude.pt/rnu/processarsituacaoutilizador</con:namespace>
+            </con:binding>
+        </con:binding>
+        <oper:operations>
+            <oper:monitoring enabled="false" aggregationInterval="10" level="pipeline"/>
+            <oper:tracingEnabled>false</oper:tracingEnabled>
+            <oper:reporting>true</oper:reporting>
+            <oper:logging enabled="true" level="debug"/>
+            <oper:sla-alerting enabled="true" level="normal"/>
+            <oper:pipeline-alerting enabled="true" level="normal"/>
+        </oper:operations>
+        <con:pageAttachments isEnabled="false"/>
+        <con:transactions isRequired="false" sameTxForResponse="false"/>
+    </con:coreEntry>
+    <con:router errorHandler="_onErrorHandler-ProcessarSituacaoUtilizador" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/typesystem/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con6="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con7="http://www.bea.com/wli/sb/stages/alert/config">
+        <con:pipeline type="error" name="_onErrorHandler-ProcessarSituacaoUtilizador">
+            <con:stage name="Errors">
+                <con:context>
+                    <con1:varNsDecl namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" prefix="oas"/>
+                    <con1:varNsDecl namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" prefix="tns"/>
+                    <con1:varNsDecl namespace="http://www.bea.com/wli/sb/context" prefix="ctx"/>
+                </con:context>
+                <con:actions>
+                    <con5:log>
+                        <con1:id>LogError_Action</con1:id>
+                        <con5:logLevel>error</con5:logLevel>
+                        <con5:expr>
+                            <con1:xqueryText>fn:concat('[Rot-ProcessarSituacaoUtilizador_PL] Erro: ', $fault/ctx:reason/text())</con1:xqueryText>
+                        </con5:expr>
+                        <con5:message>[Rot-ProcessarSituacaoUtilizador] Error Handler</con5:message>
+                    </con5:log>
+                    <con4:assign varName="InputTmp">
+                        <con1:id>SaveInputOnError</con1:id>
+                        <con4:expr>
+                            <con1:xqueryText>$body</con1:xqueryText>
+                        </con4:expr>
+                    </con4:assign>
+                    <con4:replace contents-only="true" varName="body">
+                        <con1:id>BuildErrorResponse</con1:id>
+                        <con4:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con4:location>
+                        <con4:expr>
+                            <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:Resultados>
+        <tns:Resultado>
+            <tns:NNU>0</tns:NNU>
+            <tns:codigoErro>-1</tns:codigoErro>
+            <tns:mensagemErro>{string('Erro nos dados pesquisados.')}</tns:mensagemErro>
+        </tns:Resultado>
+    </tns:Resultados>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                        </con4:expr>
+                    </con4:replace>
+                    <con4:ifThenElse>
+                        <con1:id>CheckErrorCode</con1:id>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>fn:contains(data($fault/ctx:errorCode), '386102')</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetErrorCode_386102</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText>string('2000050300')</con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con4:replace varName="body" contents-only="true">
+                                    <con1:id>SetErrorMsg_386102</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText>string('Não tem permissões para executar este serviço.')</con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>fn:contains(data($fault/ctx:errorCode), '382505')</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetErrorCode_382505</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText>string('2000050400')</con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con4:replace varName="body" contents-only="true">
+                                    <con1:id>SetErrorMsg_382505</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText>string('Não foi possível efetuar a operação. Estrutura da mensagem incorreta.')</con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>data($fault/ctx:errorCode) = string('BEA-386200')</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetErrorCode_386200</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText>string('100001030999')</con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetErrorMsg_386200</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText>string('As credenciais fornecidas não permitem o acesso a este serviço')</con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:default>
+                            <con7:alert>
+                                <con1:id>AlertOnError</con1:id>
+                                <con7:destination ref="Rot-RNU-ProcessarSituacaoUtilizador/AlertDestinations/ProcessarSituacaoUtilizador"/>
+                                <con7:description>fault</con7:description>
+                                <con7:severity>critical</con7:severity>
+                                <con7:payload>
+                                    <con1:xqueryText>$fault/ctx:errorCode</con1:xqueryText>
+                                </con7:payload>
+                            </con7:alert>
+                        </con4:default>
+                    </con4:ifThenElse>
+                    <con6:route>
+                        <con1:id>LogErrorToSATD</con1:id>
+                        <con6:service ref="Rot-RNU-ProcessarSituacaoUtilizador/Outbound/SATD_RegistoDados" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con6:operation>process</con6:operation>
+                        <con6:outboundTransform>
+                            <con4:replace contents-only="true" varName="body">
+                                <con1:id>TransformForSATD_Error</con1:id>
+                                <con4:location>
+                                    <con1:xpathText>.</con1:xpathText>
+                                </con4:location>
+                                <con4:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Transformations/XQ_SATD_RegisterLog"/>
+                                        <con1:param name="Username">
+                                            <con1:path>data($header/oas:Security/oas:UsernameToken/oas:Username)</con1:path>
+                                        </con1:param>
+                                        <con1:param name="ServiceURI">
+                                            <con1:path>"/RNU/ProcessarSituacaoUtilizador/1.00"</con1:path>
+                                        </con1:param>
+                                        <con1:param name="ServiceOperation">
+                                            <con1:path>"ClassificarUtentes"</con1:path>
+                                        </con1:param>
+                                        <con1:param name="ChavePedido">
+                                            <con1:path>fn-bea:uuid()</con1:path>
+                                        </con1:param>
+                                        <con1:param name="ChavePedidoRelacionado">
+                                            <con1:path>""</con1:path>
+                                        </con1:param>
+                                        <con1:param name="RequestPayload">
+                                            <con1:path>$InputTmp</con1:path>
+                                        </con1:param>
+                                        <con1:param name="ResponsePayload">
+                                            <con1:path>$body</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con4:expr>
+                            </con4:replace>
+                        </con6:outboundTransform>
+                    </con6:route>
+                    <con4:delete varName="header">
+                        <con1:id>DeleteHeaderOnError</con1:id>
+                    </con4:delete>
+                    <con1:reply>
+                        <con1:id>ReplyWithError</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="request" name="ValidacaoPipelinePair_request">
+            <con:stage name="ValidarCredenciais">
+                <con:context>
+                    <con1:varNsDecl namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" prefix="oas"/>
+                    <con1:varNsDecl namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" prefix="tns"/>
+                </con:context>
+                <con:actions>
+                    <con4:assign varName="ClientUser">
+                        <con1:id>SaveClientUser</con1:id>
+                        <con4:expr>
+                            <con1:xqueryText>data($header/oas:Security/oas:UsernameToken/oas:Username)</con1:xqueryText>
+                        </con4:expr>
+                    </con4:assign>
+                    <con4:ifThenElse>
+                        <con1:id>ValidarCredenciais</con1:id>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>fn:not(data($header/oas:Security/oas:UsernameToken/oas:Username) = 'processarSituacaoUtilizador' and data($header/oas:Security/oas:UsernameToken/oas:Password) = 'processarSituacao123')</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetRespCredenciaisInvalidas</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>.</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:Resultados>
+        <tns:Resultado>
+            <tns:NNU>0</tns:NNU>
+            <tns:codigoErro>{string('100001030999')}</tns:codigoErro>
+            <tns:mensagemErro>{string('As credenciais fornecidas não permitem o acesso a este serviço')}</tns:mensagemErro>
+        </tns:Resultado>
+    </tns:Resultados>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con1:reply>
+                                    <con1:id>ReplyCredenciaisInvalidas</con1:id>
+                                </con1:reply>
+                            </con4:actions>
+                        </con4:case>
+                    </con4:ifThenElse>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="ValidacaoPipelinePair_response"/>
+        <con:flow>
+            <con:pipeline-node name="ValidacaoPipelinePair">
+                <con:request>ValidacaoPipelinePair_request</con:request>
+                <con:response>ValidacaoPipelinePair_response</con:response>
+            </con:pipeline-node>
+            <con:route-node name="ProcessarSituacaoUtilizador_Rot">
+                <con:context>
+                    <con1:varNsDecl namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" prefix="tns"/>
+                    <con1:varNsDecl namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" prefix="oas"/>
+                </con:context>
+                <con:actions>
+                    <con3:route>
+                        <con1:id>RouteToInternalBS</con1:id>
+                        <con3:service ref="Rot-RNU-ProcessarSituacaoUtilizador/Outbound/ProcessarSituacaoUtilizador_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con3:operation>ClassificarUtentes</con3:operation>
+                        <con3:outboundTransform>
+                            <con4:replace varName="header" contents-only="true">
+                                <con1:id>CreateWSSecurityHeader</con1:id>
+                                <con4:location>
+                                    <con1:xpathText>.</con1:xpathText>
+                                </con4:location>
+                                <con4:expr>
+                                    <con1:xqueryText><![CDATA[<ns0:Security xmlns:ns0="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+    <ns0:UsernameToken>
+        <ns0:Username>{ $ClientUser }</ns0:Username>
+    </ns0:UsernameToken>
+</ns0:Security>]]></con1:xqueryText>
+                                </con4:expr>
+                            </con4:replace>
+                            <con4:assign varName="InputTmp">
+                                <con1:id>SaveInputRequest</con1:id>
+                                <con4:expr>
+                                    <con1:xqueryText>$body</con1:xqueryText>
+                                </con4:expr>
+                            </con4:assign>
+                        </con3:outboundTransform>
+                        <con3:responseTransform>
+                            <con6:route>
+                                <con1:id>LogSuccessToSATD</con1:id>
+                                <con6:service ref="Rot-RNU-ProcessarSituacaoUtilizador/Outbound/SATD_RegistoDados" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                                <con6:operation>process</con6:operation>
+                                <con6:outboundTransform>
+                                    <con4:replace contents-only="true" varName="body">
+                                        <con1:id>TransformForSATD_Success</con1:id>
+                                        <con4:location>
+                                            <con1:xpathText>.</con1:xpathText>
+                                        </con4:location>
+                                        <con4:expr>
+                                            <con1:xqueryTransform>
+                                                <con1:resource ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Transformations/XQ_SATD_RegisterLog"/>
+                                                <con1:param name="Username">
+                                                    <con1:path>$ClientUser</con1:path>
+                                                </con1:param>
+                                                <con1:param name="ServiceURI">
+                                                    <con1:path>"/RNU/ProcessarSituacaoUtilizador/1.00"</con1:path>
+                                                </con1:param>
+                                                <con1:param name="ServiceOperation">
+                                                    <con1:path>"ClassificarUtentes"</con1:path>
+                                                </con1:param>
+                                                <con1:param name="ChavePedido">
+                                                    <con1:path>fn-bea:uuid()</con1:path>
+                                                </con1:param>
+                                                <con1:param name="ChavePedidoRelacionado">
+                                                    <con1:path>""</con1:path>
+                                                </con1:param>
+                                                <con1:param name="RequestPayload">
+                                                    <con1:path>$InputTmp</con1:path>
+                                                </con1:param>
+                                                <con1:param name="ResponsePayload">
+                                                    <con1:path>$body</con1:path>
+                                                </con1:param>
+                                            </con1:xqueryTransform>
+                                        </con4:expr>
+                                    </con4:replace>
+                                </con6:outboundTransform>
+                            </con6:route>
+                            <con4:delete varName="header">
+                                <con1:id>DeleteHeaderOnSuccess</con1:id>
+                            </con4:delete>
+                        </con3:responseTransform>
+                    </con3:route>
+                </con:actions>
+            </con:route-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>

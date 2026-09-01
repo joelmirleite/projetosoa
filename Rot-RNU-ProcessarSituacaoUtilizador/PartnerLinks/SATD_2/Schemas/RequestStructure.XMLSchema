@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:schemaEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:schema><![CDATA[<xsd:schema targetNamespace="http://xmlns.dmm.spms.pt/201310/RequestStructure"
+	elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:req="http://xmlns.dmm.spms.pt/201310/RequestStructure" xmlns:ent="http://xmlns.satd.acss.ms.pt/Entity"
+	xmlns:cod="http://xmlns.satd.acss.ms.pt/Code">
+
+	<xsd:element name="RequestBody" type="req:RequestBodyType" />
+
+	<xsd:complexType name="RequestBodyType">
+		<xsd:sequence>
+			<xsd:element name="Service" nillable="false" maxOccurs="1"
+				type="req:ServiceType" />
+			<xsd:element name="RequestPayload" minOccurs="0"
+				maxOccurs="1" type="req:PayloadType" />
+			<xsd:element name="ResponsePayload" minOccurs="0"
+				type="req:PayloadType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="PayloadType">
+		<xsd:sequence>
+			<xsd:any processContents="skip" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceType">
+		<xsd:sequence>
+			<xsd:element name="ServiceURI" nillable="false"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="ServiceOperation" nillable="false"
+				maxOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="30" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>]]></con:schema>
+    <con:targetNamespace>http://xmlns.dmm.spms.pt/201310/RequestStructure</con:targetNamespace>
+</con:schemaEntry>

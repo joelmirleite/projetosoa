@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:schemaEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:schema><![CDATA[<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" targetNamespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" elementFormDefault="qualified">
+    <xsd:element name="ClassificarUtentesRequest" type="tns:ClassificarUtentesRequestType"/>
+    <xsd:element name="ClassificarUtentesResponse" type="tns:ClassificarUtentesResponseType"/>
+    <xsd:complexType name="ClassificarUtentesRequestType">
+        <xsd:sequence>
+            <xsd:element name="Utentes" type="tns:UtentesType" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="UtentesType">
+        <xsd:sequence>
+            <xsd:element name="Utente" type="tns:UtenteType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="UtenteType">
+        <xsd:sequence>
+            <xsd:element name="NNU" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="dataNascimento" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="dataProcessamentoSDM" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="situacaoUtilizador" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ClassificarUtentesResponseType">
+        <xsd:sequence>
+            <xsd:element name="Resultados" type="tns:ResultadosType" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ResultadosType">
+        <xsd:sequence>
+            <xsd:element name="Resultado" type="tns:ResultadoType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ResultadoType">
+        <xsd:sequence>
+            <xsd:element name="NNU" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="codigoResposta" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="mensagemResposta" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="codigoErro" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="mensagemErro" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>]]></con:schema>
+    <con:targetNamespace>http://igif.min-saude.pt/rnu/processarsituacaoutilizador</con:targetNamespace>
+</con:schemaEntry>

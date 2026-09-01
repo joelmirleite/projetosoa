@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:schemaEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:schema><![CDATA[<?xml version= '1.0' encoding= 'UTF-8' ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:int="http://xmlns.dmm.spms.pt/201207/Integration"
+     targetNamespace="http://xmlns.dmm.spms.pt/201207/Integration" elementFormDefault="qualified">
+    <xsd:complexType name="Mensagem">
+        <xsd:sequence>
+            <xsd:element name="Cabecalho" type="int:CabecalhoType" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="MensagemErro" type="int:MensagemErroType"/>
+    <xsd:complexType name="MensagemErroType">
+        <xsd:sequence>
+            <xsd:element name="Cabecalho" type="int:CabecalhoType" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="Corpo" type="int:MensagemErroCorpoType" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="MensagemErroCorpoType">
+        <xsd:sequence>
+            <xsd:element name="ListaErros" type="int:ListaMensagensType" minOccurs="1" maxOccurs="1">
+                <xsd:annotation>
+                    <xsd:documentation>Lista de erros</xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ListaMensagensType">
+        <xsd:sequence>
+            <xsd:element name="Mensagem" type="int:CodigoGenericoType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="ListaMensagens" type="int:ListaMensagensType"/>
+    <xsd:element name="Cabecalho" type="int:CabecalhoType"/>
+    <xsd:complexType name="CabecalhoType">
+        <xsd:sequence>
+            <xsd:element name="De" type="int:EntidadeType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="Para" type="int:EntidadeType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Principal" type="xsd:string" minOccurs="0" maxOccurs="1" nillable="false"/>
+            <xsd:element name="Tipo" type="int:CodigoGenericoType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="Operacao" type="int:CodigoGenericoType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="EnviadoEm" type="xsd:dateTime" minOccurs="0" maxOccurs="1" nillable="false"/>
+            <xsd:element name="ActivadoEm" type="xsd:dateTime" minOccurs="0" maxOccurs="1" nillable="false"/>
+            <xsd:element name="ChavePedido" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="ChavePedidoRelacionado" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="EntidadeType">
+        <xsd:sequence>
+            <xsd:element name="Chave" type="int:ChaveEntidadeType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="Tipo" type="int:CodigoGenericoType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="Nome" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ChaveEntidadeType">
+        <xsd:sequence>
+            <xsd:element name="Id" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="Cifra" type="int:CodigoGenericoType" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="CodigoGenericoType">
+        <xsd:sequence>
+            <xsd:element name="Codigo" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="Descricao" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>]]></con:schema>
+    <con:targetNamespace>http://xmlns.dmm.spms.pt/201207/Integration</con:targetNamespace>
+</con:schemaEntry>

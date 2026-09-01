@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:schemaEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:schema><![CDATA[<schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+        xmlns:tns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+	xmlns="http://www.w3.org/2001/XMLSchema">
+        <element name="Security">
+            <complexType>
+                <sequence>
+                    <element name="UsernameToken" type="tns:UsernameToken"/>
+                </sequence>
+            </complexType>
+        </element>
+        <complexType name="UsernameToken">
+            <sequence>
+                <element name="Username" type="string"/>
+                <element name="Password" type="string"/>
+            </sequence>
+        </complexType>
+</schema>]]></con:schema>
+    <con:targetNamespace>http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd</con:targetNamespace>
+</con:schemaEntry>

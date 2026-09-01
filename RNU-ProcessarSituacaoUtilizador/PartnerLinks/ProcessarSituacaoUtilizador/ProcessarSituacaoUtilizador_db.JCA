@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:jcaEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:jca><![CDATA[<adapter-config name="ProcessarSituacaoUtilizador_db" adapter="Database Adapter" wsdlLocation="ProcessarSituacaoUtilizador.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+
+  <connection-factory location="eis/DB/RNU" UIConnectionName="RNU" adapterRef=""/>
+  <endpoint-interaction portType="ProcessarSituacaoUtilizador_ptt" operation="ProcessarSituacaoUtilizador">
+    <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">
+      <property name="SchemaName" value="RNU"/>
+      <property name="PackageName" value="inscr_api_ws"/>
+      <property name="ProcedureName" value="processar_situacao_utilizador"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+    <output/>
+  </endpoint-interaction>
+
+</adapter-config>]]></con:jca>
+    <con:jcaDependency>
+        <con:wsdlRef wsdlLocation="ProcessarSituacaoUtilizador.wsdl" ref="RNU-ProcessarSituacaoUtilizador/PartnerLinks/ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador"/>
+    </con:jcaDependency>
+</con:jcaEntry>

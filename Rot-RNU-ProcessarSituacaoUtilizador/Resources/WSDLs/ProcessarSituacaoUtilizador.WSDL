@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:wsdlEntry xmlns:con="http://www.bea.com/wli/sb/resources/config">
+    <con:wsdl><![CDATA[<definitions name="ProcessarSituacaoUtilizadorService" targetNamespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" xmlns:ns2="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+    <types>
+        <xsd:schema>
+            <xsd:import namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" schemaLocation="../Schemas/ProcessarSituacaoUtilizador.xsd"/>
+        </xsd:schema>
+        <xsd:schema>
+            <xsd:import namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" schemaLocation="../Schemas/WS-Security.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="ClassificarUtentesRequestMessage">
+        <part name="parameters" element="tns:ClassificarUtentesRequest"/>
+    </message>
+    <message name="ClassificarUtentesResponseMessage">
+        <part name="parameters" element="tns:ClassificarUtentesResponse"/>
+    </message>
+    <portType name="ProcessarSituacaoUtilizadorPortType">
+        <operation name="ClassificarUtentes">
+            <input message="tns:ClassificarUtentesRequestMessage"/>
+            <output message="tns:ClassificarUtentesResponseMessage"/>
+        </operation>
+    </portType>
+    <binding name="ProcessarSituacaoUtilizadorBinding" type="tns:ProcessarSituacaoUtilizadorPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="ClassificarUtentes">
+            <soap:operation soapAction="http://igif.min-saude.pt/rnu/processarsituacaoutilizador/ClassificarUtentes"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="ProcessarSituacaoUtilizadorService">
+        <port name="ProcessarSituacaoUtilizadorPort" binding="tns:ProcessarSituacaoUtilizadorBinding">
+            <soap:address location="http://localhost:7001/RNU/ProcessarSituacaoUtilizador/1.00"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="ProcessarSituacaoUtilizador">
+        <plnk:role name="ProcessarSituacaoUtilizadorProvider">
+            <plnk:portType name="tns:ProcessarSituacaoUtilizadorPortType"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+</definitions>]]></con:wsdl>
+    <con:dependencies>
+        <con:schemaRef isInclude="false" schemaLocation="../Schemas/ProcessarSituacaoUtilizador.xsd" namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" ref="Rot-RNU-ProcessarSituacaoUtilizador/Resources/Schemas/ProcessarSituacaoUtilizador"/>
+        <con:schemaRef isInclude="false" schemaLocation="../Schemas/WS-Security.xsd" namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" ref="Rot-RNU-ProcessarSituacaoUtilizador/Resources/Schemas/WS-Security"/>
+    </con:dependencies>
+    <con:targetNamespace>http://igif.min-saude.pt/rnu/processarsituacaoutilizador</con:targetNamespace>
+</con:wsdlEntry>
