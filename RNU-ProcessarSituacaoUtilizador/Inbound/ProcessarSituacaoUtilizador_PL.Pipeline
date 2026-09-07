@@ -132,25 +132,23 @@
                     <con3:assign varName="erros">
                         <con1:id>BuildValidationErrors</con1:id>
                         <con3:expr>
-                            <con1:xqueryText><![CDATA[<tns:Resultados xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+                            <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
     {
         for $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente
         where fn:string($u/tns:NNU) = "" or fn:string($u/tns:dataNascimento) = "" or fn:string($u/tns:situacaoUtilizador) = ""
         return
-            <tns:Resultado>
-                <tns:NNU>{if (fn:string($u/tns:NNU) ne "") then xs:long($u/tns:NNU) else 0}</tns:NNU>
-                <tns:codigoErro>400</tns:codigoErro>
-                <tns:mensagemErro>Campos obrigatorios em falta (NNU, dataNascimento, situacaoUtilizador)</tns:mensagemErro>
-            </tns:Resultado>
+            (<tns:NNU>{if (fn:string($u/tns:NNU) ne "") then xs:long($u/tns:NNU) else 0}</tns:NNU>,
+             <tns:codigoErro>400</tns:codigoErro>,
+             <tns:mensagemErro>Campos obrigatorios em falta (NNU, dataNascimento, situacaoUtilizador)</tns:mensagemErro>)
     }
-</tns:Resultados>]]></con1:xqueryText>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
                         </con3:expr>
                     </con3:assign>
                     <con3:ifThenElse>
                         <con1:id>CheckAllInvalid</con1:id>
                         <con3:case>
                             <con3:condition>
-                                <con1:xqueryText>count($requestValido/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente) = 0 and count($erros/tns:Resultado) > 0</con1:xqueryText>
+                                <con1:xqueryText>count($requestValido/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente) = 0 and fn:string($erros/tns:codigoErro) ne ""</con1:xqueryText>
                             </con3:condition>
                             <con3:actions>
                                 <con3:replace varName="body" contents-only="true">
@@ -159,11 +157,7 @@
                                         <con1:xpathText>.</con1:xpathText>
                                     </con3:location>
                                     <con3:expr>
-                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
-    <tns:Resultados>
-        { $erros/tns:Resultado }
-    </tns:Resultados>
-</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                        <con1:xqueryText><![CDATA[$erros]]></con1:xqueryText>
                                     </con3:expr>
                                 </con3:replace>
                                 <con1:reply>
@@ -244,16 +238,13 @@
                                 <con1:id>AuditLogResultados</con1:id>
                                 <con4:logLevel>warning</con4:logLevel>
                                 <con4:expr>
-                                    <con1:xqueryText><![CDATA[fn:string-join(
-    for $r in $body/tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado
-    return fn:concat(
-        '[AUDIT] NNU=', fn:data($r/tns:NNU),
-        ' codigoResposta=', fn:string($r/tns:codigoResposta),
-        ' mensagemResposta=', fn:string($r/tns:mensagemResposta),
-        ' codigoErro=', fn:string($r/tns:codigoErro),
-        ' mensagemErro=', fn:string($r/tns:mensagemErro)
-    ),
-    ' | '
+                                    <con1:xqueryText><![CDATA[let $r := $body/tns:ClassificarUtentesResponse
+return fn:concat(
+    '[AUDIT] NNU=', fn:data($r/tns:NNU),
+    ' codigoResposta=', fn:string($r/tns:codigoResposta),
+    ' mensagemResposta=', fn:string($r/tns:mensagemResposta),
+    ' codigoErro=', fn:string($r/tns:codigoErro),
+    ' mensagemErro=', fn:string($r/tns:mensagemErro)
 )]]></con1:xqueryText>
                                 </con4:expr>
                                 <con4:message>[ProcessarSituacaoUtilizador] Auditoria por utente</con4:message>

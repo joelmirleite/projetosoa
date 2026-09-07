@@ -23,17 +23,7 @@
     </xsd:complexType>
     <xsd:complexType name="ClassificarUtentesResponseType">
         <xsd:sequence>
-            <xsd:element name="Resultados" type="tns:ResultadosType" minOccurs="1" maxOccurs="1"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <xsd:complexType name="ResultadosType">
-        <xsd:sequence>
-            <xsd:element name="Resultado" type="tns:ResultadoType" minOccurs="0" maxOccurs="unbounded"/>
-        </xsd:sequence>
-    </xsd:complexType>
-    <xsd:complexType name="ResultadoType">
-        <xsd:sequence>
-            <xsd:element name="NNU" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="NNU" type="xsd:long" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="codigoResposta" type="xsd:string" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="mensagemResposta" type="xsd:string" minOccurs="0" maxOccurs="1"/>
             <xsd:element name="codigoErro" type="xsd:string" minOccurs="0" maxOccurs="1"/>

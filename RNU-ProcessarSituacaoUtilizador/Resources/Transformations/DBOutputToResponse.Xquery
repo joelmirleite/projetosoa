@@ -6,36 +6,30 @@ declare namespace tns = "http://igif.min-saude.pt/rnu/processarsituacaoutilizado
 declare namespace db = "http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador";
 declare namespace xf = "http://tempuri.org/RNU-ProcessarSituacaoUtilizador/Resources/Transformations/DBOutputToResponse/";
 
-declare function xf:DBOutputToResponse($outputParameters as element(db:OutputParameters), $classificarUtentesRequest as element(tns:ClassificarUtentesRequest), $erros as element(tns:Resultados)*) as element(tns:ClassificarUtentesResponse) {
+declare function xf:DBOutputToResponse($outputParameters as element(db:OutputParameters), $classificarUtentesRequest as element(tns:ClassificarUtentesRequest), $erros as element()*) as element(tns:ClassificarUtentesResponse) {
     let $nnu := fn:data($classificarUtentesRequest/tns:Utentes/tns:Utente/tns:NNU)
+    let $msg := $outputParameters/db:PROCESSAR_SITUACAO_UTILIZADOR/db:PROCESSAR_SITUACAO_UTILIZADOR_ITEM[1]
     return
     <tns:ClassificarUtentesResponse>
-        <tns:Resultados>
-            {
-                for $msg in $outputParameters/db:PROCESSAR_SITUACAO_UTILIZADOR/db:PROCESSAR_SITUACAO_UTILIZADOR_ITEM
+        <tns:NNU>{$nnu}</tns:NNU>
+        {
+            if ($msg/db:CODIGO) then
                 let $codigo := fn:data($msg/db:CODIGO)
                 return
                     if (fn:starts-with($codigo, 'E')) then
-                        <tns:Resultado>
-                            <tns:NNU>{$nnu}</tns:NNU>
-                            <tns:codigoErro>{fn:data($msg/db:CODIGO)}</tns:codigoErro>
-                            <tns:mensagemErro>{fn:data($msg/db:MENSAGEM)}</tns:mensagemErro>
-                        </tns:Resultado>
+                        (<tns:codigoErro>{$codigo}</tns:codigoErro>,
+                         <tns:mensagemErro>{fn:data($msg/db:MENSAGEM)}</tns:mensagemErro>)
                     else
-                        <tns:Resultado>
-                            <tns:NNU>{$nnu}</tns:NNU>
-                            <tns:codigoResposta>{fn:data($msg/db:CODIGO)}</tns:codigoResposta>
-                            <tns:mensagemResposta>{fn:data($msg/db:MENSAGEM)}</tns:mensagemResposta>
-                        </tns:Resultado>,
-                $erros/tns:Resultado
-            }
-        </tns:Resultados>
+                        (<tns:codigoResposta>{$codigo}</tns:codigoResposta>,
+                         <tns:mensagemResposta>{fn:data($msg/db:MENSAGEM)}</tns:mensagemResposta>)
+            else ()
+        }
     </tns:ClassificarUtentesResponse>
 };
 
 declare variable $outputParameters as element(db:OutputParameters) external;
 declare variable $classificarUtentesRequest as element(tns:ClassificarUtentesRequest) external;
-declare variable $erros as element(tns:Resultados)* external;
+declare variable $erros as element()* external;
 
 xf:DBOutputToResponse($outputParameters, $classificarUtentesRequest, $erros)]]></con:xquery>
     <con:dependency type="schema">

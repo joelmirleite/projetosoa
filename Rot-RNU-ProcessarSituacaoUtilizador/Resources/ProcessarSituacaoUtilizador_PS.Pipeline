@@ -49,13 +49,9 @@
                         </con4:location>
                         <con4:expr>
                             <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
-    <tns:Resultados>
-        <tns:Resultado>
-            <tns:NNU>0</tns:NNU>
-            <tns:codigoErro>-1</tns:codigoErro>
-            <tns:mensagemErro>{string('Erro nos dados pesquisados.')}</tns:mensagemErro>
-        </tns:Resultado>
-    </tns:Resultados>
+    <tns:NNU>0</tns:NNU>
+    <tns:codigoErro>-1</tns:codigoErro>
+    <tns:mensagemErro>{string('Erro nos dados pesquisados.')}</tns:mensagemErro>
 </tns:ClassificarUtentesResponse>]]></con1:xqueryText>
                         </con4:expr>
                     </con4:replace>
@@ -69,7 +65,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorCode_386102</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('2000050300')</con1:xqueryText>
@@ -78,7 +74,7 @@
                                 <con4:replace varName="body" contents-only="true">
                                     <con1:id>SetErrorMsg_386102</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('Não tem permissões para executar este serviço.')</con1:xqueryText>
@@ -94,7 +90,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorCode_382505</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('2000050400')</con1:xqueryText>
@@ -103,7 +99,7 @@
                                 <con4:replace varName="body" contents-only="true">
                                     <con1:id>SetErrorMsg_382505</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('Não foi possível efetuar a operação. Estrutura da mensagem incorreta.')</con1:xqueryText>
@@ -119,7 +115,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorCode_386200</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('100001030999')</con1:xqueryText>
@@ -128,7 +124,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorMsg_386200</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('As credenciais fornecidas não permitem o acesso a este serviço')</con1:xqueryText>
@@ -223,13 +219,9 @@
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
-    <tns:Resultados>
-        <tns:Resultado>
-            <tns:NNU>0</tns:NNU>
-            <tns:codigoErro>{string('100001030999')}</tns:codigoErro>
-            <tns:mensagemErro>{string('As credenciais fornecidas não permitem o acesso a este serviço')}</tns:mensagemErro>
-        </tns:Resultado>
-    </tns:Resultados>
+    <tns:NNU>0</tns:NNU>
+    <tns:codigoErro>{string('100001030999')}</tns:codigoErro>
+    <tns:mensagemErro>{string('As credenciais fornecidas não permitem o acesso a este serviço')}</tns:mensagemErro>
 </tns:ClassificarUtentesResponse>]]></con1:xqueryText>
                                     </con4:expr>
                                 </con4:replace>
