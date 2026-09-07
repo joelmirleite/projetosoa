@@ -55,11 +55,11 @@
                         </jca:property>
                         <jca:property>
                             <jca:name>PackageName</jca:name>
-                            <jca:value>inscr_api_ws_osb</jca:value>
+                            <jca:value>inscr_api_ws</jca:value>
                         </jca:property>
                         <jca:property>
                             <jca:name>ProcedureName</jca:name>
-                            <jca:value>processar_situacao_utilizador_lista</jca:value>
+                            <jca:value>processar_situacao_utilizador</jca:value>
                         </jca:property>
                         <jca:property>
                             <jca:name>GetActiveUnitOfWork</jca:name>

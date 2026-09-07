@@ -4,8 +4,17 @@
    <element name="InputParameters">
       <complexType>
          <sequence>
-            <element name="UTENTES" type="db:T_UTENTES_ARR" db:index="1" db:type="Array" minOccurs="0" nillable="true"/>
-            <element name="ICT_ENTIDADE" db:index="2" db:type="VARCHAR2" minOccurs="0" nillable="true">
+            <element name="ICT_NNU" type="decimal" db:index="1" db:type="NUMBER" minOccurs="0" nillable="true"/>
+            <element name="ICT_DATA_NASC" type="dateTime" db:index="2" db:type="DATE" minOccurs="0" nillable="true"/>
+            <element name="ICT_DATA_PROC_SDM" type="dateTime" db:index="3" db:type="DATE" minOccurs="0" nillable="true"/>
+            <element name="ICT_SITUACAO" db:index="4" db:type="VARCHAR2" minOccurs="0" nillable="true">
+               <simpleType>
+                  <restriction base="string">
+                     <maxLength value="100"/>
+                  </restriction>
+               </simpleType>
+            </element>
+            <element name="ICT_ENTIDADE" db:index="5" db:type="VARCHAR2" minOccurs="0" nillable="true">
                <simpleType>
                   <restriction base="string">
                      <maxLength value="100"/>
@@ -18,37 +27,17 @@
    <element name="OutputParameters">
       <complexType>
          <sequence>
-            <element name="RESULTADOS" type="db:T_RESULTADOS_ARR" db:index="0" db:type="Array" minOccurs="0" nillable="true"/>
+            <element name="PROCESSAR_SITUACAO_UTILIZADOR" type="db:IGIF.T_COD_MSG_ARR" db:index="0" db:type="Array" minOccurs="0" nillable="true"/>
          </sequence>
       </complexType>
    </element>
-   <complexType name="T_UTENTES_ARR">
+   <complexType name="IGIF.T_COD_MSG_ARR">
       <sequence>
-         <element name="UTENTES_ITEM" type="db:T_UTENTE_REC" db:type="Struct" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+         <element name="PROCESSAR_SITUACAO_UTILIZADOR_ITEM" type="db:IGIF.T_COD_MSG" db:type="Struct" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
       </sequence>
    </complexType>
-   <complexType name="T_UTENTE_REC">
+   <complexType name="IGIF.T_COD_MSG">
       <sequence>
-         <element name="ICT_NNU" type="decimal" db:index="1" db:type="NUMBER" minOccurs="0" nillable="true"/>
-         <element name="ICT_DATA_NASC" type="dateTime" db:index="2" db:type="DATE" minOccurs="0" nillable="true"/>
-         <element name="ICT_DATA_PROC_SDM" type="dateTime" db:index="3" db:type="DATE" minOccurs="0" nillable="true"/>
-         <element name="ICT_SITUACAO" db:index="4" db:type="VARCHAR2" minOccurs="0" nillable="true">
-            <simpleType>
-               <restriction base="string">
-                  <maxLength value="100"/>
-               </restriction>
-            </simpleType>
-         </element>
-      </sequence>
-   </complexType>
-   <complexType name="T_RESULTADOS_ARR">
-      <sequence>
-         <element name="RESULTADOS_ITEM" type="db:T_RESULTADO_REC" db:type="Struct" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
-      </sequence>
-   </complexType>
-   <complexType name="T_RESULTADO_REC">
-      <sequence>
-         <element name="ICT_NNU" type="decimal" db:index="1" db:type="NUMBER" minOccurs="0" nillable="true"/>
          <element name="CODIGO" db:type="VARCHAR2" minOccurs="0" nillable="true">
             <simpleType>
                <restriction base="string">

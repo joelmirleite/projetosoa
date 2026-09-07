@@ -231,6 +231,9 @@
                                         <con1:param name="outputParameters">
                                             <con1:path>$body/db:OutputParameters</con1:path>
                                         </con1:param>
+                                        <con1:param name="classificarUtentesRequest">
+                                            <con1:path>$requestValido/tns:ClassificarUtentesRequest</con1:path>
+                                        </con1:param>
                                         <con1:param name="erros">
                                             <con1:path>$erros</con1:path>
                                         </con1:param>

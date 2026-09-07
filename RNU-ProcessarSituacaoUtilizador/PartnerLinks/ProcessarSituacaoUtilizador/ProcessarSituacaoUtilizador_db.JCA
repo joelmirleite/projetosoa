@@ -6,8 +6,8 @@
   <endpoint-interaction portType="ProcessarSituacaoUtilizador_ptt" operation="ProcessarSituacaoUtilizador">
     <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">
       <property name="SchemaName" value="RNU"/>
-      <property name="PackageName" value="inscr_api_ws_osb"/>
-      <property name="ProcedureName" value="processar_situacao_utilizador_lista"/>
+      <property name="PackageName" value="inscr_api_ws"/>
+      <property name="ProcedureName" value="processar_situacao_utilizador"/>
       <property name="GetActiveUnitOfWork" value="false"/>
     </interaction-spec>
     <output/>
