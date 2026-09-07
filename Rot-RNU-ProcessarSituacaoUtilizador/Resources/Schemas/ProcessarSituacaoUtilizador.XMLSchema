@@ -10,7 +10,7 @@
     </xsd:complexType>
     <xsd:complexType name="UtentesType">
         <xsd:sequence>
-            <xsd:element name="Utente" type="tns:UtenteType" minOccurs="1" maxOccurs="unbounded"/>
+            <xsd:element name="Utente" type="tns:UtenteType" minOccurs="1" maxOccurs="1"/>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:complexType name="UtenteType">
