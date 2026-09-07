@@ -40,13 +40,9 @@
                         </con3:location>
                         <con3:expr>
                             <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
-    <tns:Resultados>
-        <tns:Resultado>
-            <tns:NNU>0</tns:NNU>
-            <tns:codigoErro>-1</tns:codigoErro>
-            <tns:mensagemErro>{fn:concat('Erro no processamento: ', $fault/ctx:reason/text())}</tns:mensagemErro>
-        </tns:Resultado>
-    </tns:Resultados>
+    <tns:NNU>0</tns:NNU>
+    <tns:codigoErro>-1</tns:codigoErro>
+    <tns:mensagemErro>{fn:concat('Erro no processamento: ', $fault/ctx:reason/text())}</tns:mensagemErro>
 </tns:ClassificarUtentesResponse>]]></con1:xqueryText>
                         </con3:expr>
                     </con3:replace>
@@ -60,7 +56,7 @@
                                 <con3:replace contents-only="true" varName="body">
                                     <con1:id>SetCod_386200</con1:id>
                                     <con3:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
                                     </con3:location>
                                     <con3:expr>
                                         <con1:xqueryText>string('20000403')</con1:xqueryText>
@@ -69,7 +65,7 @@
                                 <con3:replace contents-only="true" varName="body">
                                     <con1:id>SetMsg_386200</con1:id>
                                     <con3:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
                                     </con3:location>
                                     <con3:expr>
                                         <con1:xqueryText>string('Credenciais Invalidas')</con1:xqueryText>
@@ -85,7 +81,7 @@
                                 <con3:replace contents-only="true" varName="body">
                                     <con1:id>SetCod_Convert</con1:id>
                                     <con3:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
                                     </con3:location>
                                     <con3:expr>
                                         <con1:xqueryText>string('20000422')</con1:xqueryText>
@@ -94,7 +90,7 @@
                                 <con3:replace contents-only="true" varName="body">
                                     <con1:id>SetMsg_Convert</con1:id>
                                     <con3:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:Resultados/tns:Resultado/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
                                     </con3:location>
                                     <con3:expr>
                                         <con1:xqueryText>string('Campo esta no formato errado')</con1:xqueryText>
@@ -118,15 +114,7 @@
                     <con3:assign varName="requestValido">
                         <con1:id>FilterValidUtentes</con1:id>
                         <con3:expr>
-                            <con1:xqueryText><![CDATA[<tns:ClassificarUtentesRequest xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
-    <tns:Utentes>
-        {
-            for $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente
-            where fn:string($u/tns:NNU) ne "" and fn:string($u/tns:dataNascimento) ne "" and fn:string($u/tns:situacaoUtilizador) ne ""
-            return $u
-        }
-    </tns:Utentes>
-</tns:ClassificarUtentesRequest>]]></con1:xqueryText>
+                            <con1:xqueryText><![CDATA[$body/tns:ClassificarUtentesRequest]]></con1:xqueryText>
                         </con3:expr>
                     </con3:assign>
                     <con3:assign varName="erros">
@@ -134,7 +122,7 @@
                         <con3:expr>
                             <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
     {
-        for $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente
+        for $u in $requestValido/tns:Utentes/tns:Utente
         where fn:string($u/tns:NNU) = "" or fn:string($u/tns:dataNascimento) = "" or fn:string($u/tns:situacaoUtilizador) = ""
         return
             (<tns:NNU>{if (fn:string($u/tns:NNU) ne "") then xs:long($u/tns:NNU) else 0}</tns:NNU>,
@@ -148,7 +136,7 @@
                         <con1:id>CheckAllInvalid</con1:id>
                         <con3:case>
                             <con3:condition>
-                                <con1:xqueryText>count($requestValido/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente) = 0 and fn:string($erros/tns:codigoErro) ne ""</con1:xqueryText>
+                                <con1:xqueryText>count($requestValido/tns:Utentes/tns:Utente) = 0 and fn:string($erros/tns:codigoErro) ne ""</con1:xqueryText>
                             </con3:condition>
                             <con3:actions>
                                 <con3:replace varName="body" contents-only="true">
@@ -196,7 +184,7 @@
                                     <con1:xqueryTransform>
                                         <con1:resource ref="RNU-ProcessarSituacaoUtilizador/Resources/Transformations/RequestToDBInput"/>
                                         <con1:param name="classificarUtentesRequest">
-                                            <con1:path>$requestValido/tns:ClassificarUtentesRequest</con1:path>
+                                            <con1:path>$requestValido</con1:path>
                                         </con1:param>
                                         <con1:param name="entidade">
                                             <con1:path>if (exists($header/oas:Security/oas:UsernameToken/oas:Username)) then string($header/oas:Security/oas:UsernameToken/oas:Username) else 'RNU-ProcessarSituacaoUtilizador'</con1:path>
@@ -226,10 +214,7 @@
                                             <con1:path>$body/db:OutputParameters</con1:path>
                                         </con1:param>
                                         <con1:param name="classificarUtentesRequest">
-                                            <con1:path>$requestValido/tns:ClassificarUtentesRequest</con1:path>
-                                        </con1:param>
-                                        <con1:param name="erros">
-                                            <con1:path>$erros</con1:path>
+                                            <con1:path>$requestValido</con1:path>
                                         </con1:param>
                                     </con1:xqueryTransform>
                                 </con3:expr>

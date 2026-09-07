@@ -6,7 +6,7 @@ declare namespace tns = "http://igif.min-saude.pt/rnu/processarsituacaoutilizado
 declare namespace db = "http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador";
 declare namespace xf = "http://tempuri.org/RNU-ProcessarSituacaoUtilizador/Resources/Transformations/DBOutputToResponse/";
 
-declare function xf:DBOutputToResponse($outputParameters as element(db:OutputParameters), $classificarUtentesRequest as element(tns:ClassificarUtentesRequest), $erros as element()*) as element(tns:ClassificarUtentesResponse) {
+declare function xf:DBOutputToResponse($outputParameters as element(db:OutputParameters), $classificarUtentesRequest as element(tns:ClassificarUtentesRequest)) as element(tns:ClassificarUtentesResponse) {
     let $nnu := fn:data($classificarUtentesRequest/tns:Utentes/tns:Utente/tns:NNU)
     let $msg := $outputParameters/db:PROCESSAR_SITUACAO_UTILIZADOR/db:PROCESSAR_SITUACAO_UTILIZADOR_ITEM[1]
     return
@@ -29,9 +29,8 @@ declare function xf:DBOutputToResponse($outputParameters as element(db:OutputPar
 
 declare variable $outputParameters as element(db:OutputParameters) external;
 declare variable $classificarUtentesRequest as element(tns:ClassificarUtentesRequest) external;
-declare variable $erros as element()* external;
 
-xf:DBOutputToResponse($outputParameters, $classificarUtentesRequest, $erros)]]></con:xquery>
+xf:DBOutputToResponse($outputParameters, $classificarUtentesRequest)]]></con:xquery>
     <con:dependency type="schema">
         <con:resource ref="RNU-ProcessarSituacaoUtilizador/PartnerLinks/ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador_sp" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador"/>
     </con:dependency>
