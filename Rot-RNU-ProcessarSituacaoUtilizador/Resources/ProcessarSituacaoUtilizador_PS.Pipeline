@@ -49,9 +49,8 @@
                         </con4:location>
                         <con4:expr>
                             <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
-    <tns:NNU>0</tns:NNU>
-    <tns:codigoErro>-1</tns:codigoErro>
-    <tns:mensagemErro>{string('Erro nos dados pesquisados.')}</tns:mensagemErro>
+    <tns:CodigoResposta>-1</tns:CodigoResposta>
+    <tns:MensagemResposta>{string('Erro nos dados pesquisados.')}</tns:MensagemResposta>
 </tns:ClassificarUtentesResponse>]]></con1:xqueryText>
                         </con4:expr>
                     </con4:replace>
@@ -65,7 +64,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorCode_386102</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:CodigoResposta</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('2000050300')</con1:xqueryText>
@@ -74,7 +73,7 @@
                                 <con4:replace varName="body" contents-only="true">
                                     <con1:id>SetErrorMsg_386102</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:MensagemResposta</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('Não tem permissões para executar este serviço.')</con1:xqueryText>
@@ -90,7 +89,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorCode_382505</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:CodigoResposta</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('2000050400')</con1:xqueryText>
@@ -99,7 +98,7 @@
                                 <con4:replace varName="body" contents-only="true">
                                     <con1:id>SetErrorMsg_382505</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:MensagemResposta</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('Não foi possível efetuar a operação. Estrutura da mensagem incorreta.')</con1:xqueryText>
@@ -115,7 +114,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorCode_386200</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:codigoErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:CodigoResposta</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('100001030999')</con1:xqueryText>
@@ -124,7 +123,7 @@
                                 <con4:replace contents-only="true" varName="body">
                                     <con1:id>SetErrorMsg_386200</con1:id>
                                     <con4:location>
-                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:mensagemErro</con1:xpathText>
+                                        <con1:xpathText>./tns:ClassificarUtentesResponse/tns:MensagemResposta</con1:xpathText>
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText>string('As credenciais fornecidas não permitem o acesso a este serviço')</con1:xqueryText>
@@ -219,9 +218,8 @@
                                     </con4:location>
                                     <con4:expr>
                                         <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
-    <tns:NNU>0</tns:NNU>
-    <tns:codigoErro>{string('100001030999')}</tns:codigoErro>
-    <tns:mensagemErro>{string('As credenciais fornecidas não permitem o acesso a este serviço')}</tns:mensagemErro>
+    <tns:CodigoResposta>{string('100001030999')}</tns:CodigoResposta>
+    <tns:MensagemResposta>{string('As credenciais fornecidas não permitem o acesso a este serviço')}</tns:MensagemResposta>
 </tns:ClassificarUtentesResponse>]]></con1:xqueryText>
                                     </con4:expr>
                                 </con4:replace>

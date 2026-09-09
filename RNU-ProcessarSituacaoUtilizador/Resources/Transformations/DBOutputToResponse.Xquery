@@ -6,31 +6,22 @@ declare namespace tns = "http://igif.min-saude.pt/rnu/processarsituacaoutilizado
 declare namespace db = "http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador";
 declare namespace xf = "http://tempuri.org/RNU-ProcessarSituacaoUtilizador/Resources/Transformations/DBOutputToResponse/";
 
-declare function xf:DBOutputToResponse($outputParameters as element(db:OutputParameters), $classificarUtentesRequest as element(tns:ClassificarUtentesRequest)) as element(tns:ClassificarUtentesResponse) {
-    let $nnu := fn:data($classificarUtentesRequest/tns:Utentes/tns:Utente/tns:NNU)
+declare function xf:DBOutputToResponse($outputParameters as element(db:OutputParameters)) as element(tns:ClassificarUtentesResponse) {
     let $msg := $outputParameters/db:PROCESSAR_SITUACAO_UTILIZADOR/db:PROCESSAR_SITUACAO_UTILIZADOR_ITEM[1]
     return
     <tns:ClassificarUtentesResponse>
-        <tns:NNU>{$nnu}</tns:NNU>
         {
             if ($msg/db:CODIGO) then
-                let $codigo := fn:data($msg/db:CODIGO)
-                return
-                    if (fn:starts-with($codigo, 'E')) then
-                        (<tns:codigoErro>{$codigo}</tns:codigoErro>,
-                         <tns:mensagemErro>{fn:data($msg/db:MENSAGEM)}</tns:mensagemErro>)
-                    else
-                        (<tns:codigoResposta>{$codigo}</tns:codigoResposta>,
-                         <tns:mensagemResposta>{fn:data($msg/db:MENSAGEM)}</tns:mensagemResposta>)
+                (<tns:CodigoResposta>{fn:data($msg/db:CODIGO)}</tns:CodigoResposta>,
+                 <tns:MensagemResposta>{fn:data($msg/db:MENSAGEM)}</tns:MensagemResposta>)
             else ()
         }
     </tns:ClassificarUtentesResponse>
 };
 
 declare variable $outputParameters as element(db:OutputParameters) external;
-declare variable $classificarUtentesRequest as element(tns:ClassificarUtentesRequest) external;
 
-xf:DBOutputToResponse($outputParameters, $classificarUtentesRequest)]]></con:xquery>
+xf:DBOutputToResponse($outputParameters)]]></con:xquery>
     <con:dependency type="schema">
         <con:resource ref="RNU-ProcessarSituacaoUtilizador/PartnerLinks/ProcessarSituacaoUtilizador/ProcessarSituacaoUtilizador_sp" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/sp/ProcessarSituacaoUtilizador"/>
     </con:dependency>
