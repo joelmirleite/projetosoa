@@ -154,30 +154,29 @@
                                     <con1:xpathText>.</con1:xpathText>
                                 </con4:location>
                                 <con4:expr>
-                                    <con1:xqueryTransform>
-                                        <con1:resource ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Transformations/XQ_SATD_RegisterLog"/>
-                                        <con1:param name="Username">
-                                            <con1:path>data($header/oas:Security/oas:UsernameToken/oas:Username)</con1:path>
-                                        </con1:param>
-                                        <con1:param name="ServiceURI">
-                                            <con1:path>"/RNU/ProcessarSituacaoUtilizador/1.00"</con1:path>
-                                        </con1:param>
-                                        <con1:param name="ServiceOperation">
-                                            <con1:path>"ClassificarUtentes"</con1:path>
-                                        </con1:param>
-                                        <con1:param name="ChavePedido">
-                                            <con1:path>fn-bea:uuid()</con1:path>
-                                        </con1:param>
-                                        <con1:param name="ChavePedidoRelacionado">
-                                            <con1:path>""</con1:path>
-                                        </con1:param>
-                                        <con1:param name="RequestPayload">
-                                            <con1:path>$InputTmp</con1:path>
-                                        </con1:param>
-                                        <con1:param name="ResponsePayload">
-                                            <con1:path>$body</con1:path>
-                                        </con1:param>
-                                    </con1:xqueryTransform>
+                                    <con1:xqueryText><![CDATA[<ns1:RegistoDadosLogProcessRequest xmlns:ns1="http://xmlns.dmm.spms.pt/201310/RegistoDadosLog" xmlns:ns2="http://xmlns.dmm.spms.pt/201207/Integration" xmlns:ns0="http://xmlns.dmm.spms.pt/201310/RequestStructure">
+    <ns1:MessageHeader>
+        <ns2:De>
+            <ns2:Chave>
+                <ns2:Id>{ data($header/oas:Security/oas:UsernameToken/oas:Username) }</ns2:Id>
+                <ns2:Cifra><ns2:Codigo>1</ns2:Codigo></ns2:Cifra>
+            </ns2:Chave>
+        </ns2:De>
+        <ns2:EnviadoEm>{ fn:current-dateTime() }</ns2:EnviadoEm>
+        <ns2:ActivadoEm>{ fn:current-dateTime() }</ns2:ActivadoEm>
+        <ns2:ChavePedido>{ fn-bea:uuid() }</ns2:ChavePedido>
+    </ns1:MessageHeader>
+    <ns1:MessageBody>
+        <ns1:RequestBody>
+            <ns0:Service>
+                <ns0:ServiceURI>/RNU/ProcessarSituacaoUtilizador/1.00</ns0:ServiceURI>
+                <ns0:ServiceOperation>{ fn:concat('ClassificarUtentes', '_12c') }</ns0:ServiceOperation>
+            </ns0:Service>
+            <ns0:RequestPayload>{ $InputTmp/@* , $InputTmp/node() }</ns0:RequestPayload>
+            <ns0:ResponsePayload>{ $body/@* , $body/node() }</ns0:ResponsePayload>
+        </ns1:RequestBody>
+    </ns1:MessageBody>
+</ns1:RegistoDadosLogProcessRequest>]]></con1:xqueryText>
                                 </con4:expr>
                             </con4:replace>
                         </con6:outboundTransform>
@@ -281,30 +280,29 @@
                                             <con1:xpathText>.</con1:xpathText>
                                         </con4:location>
                                         <con4:expr>
-                                            <con1:xqueryTransform>
-                                                <con1:resource ref="Rot-RNU-ProcessarSituacaoUtilizador/PartnerLinks/SATD_2/Transformations/XQ_SATD_RegisterLog"/>
-                                                <con1:param name="Username">
-                                                    <con1:path>$ClientUser</con1:path>
-                                                </con1:param>
-                                                <con1:param name="ServiceURI">
-                                                    <con1:path>"/RNU/ProcessarSituacaoUtilizador/1.00"</con1:path>
-                                                </con1:param>
-                                                <con1:param name="ServiceOperation">
-                                                    <con1:path>"ClassificarUtentes"</con1:path>
-                                                </con1:param>
-                                                <con1:param name="ChavePedido">
-                                                    <con1:path>fn-bea:uuid()</con1:path>
-                                                </con1:param>
-                                                <con1:param name="ChavePedidoRelacionado">
-                                                    <con1:path>""</con1:path>
-                                                </con1:param>
-                                                <con1:param name="RequestPayload">
-                                                    <con1:path>$InputTmp</con1:path>
-                                                </con1:param>
-                                                <con1:param name="ResponsePayload">
-                                                    <con1:path>$body</con1:path>
-                                                </con1:param>
-                                            </con1:xqueryTransform>
+                                            <con1:xqueryText><![CDATA[<ns1:RegistoDadosLogProcessRequest xmlns:ns1="http://xmlns.dmm.spms.pt/201310/RegistoDadosLog" xmlns:ns2="http://xmlns.dmm.spms.pt/201207/Integration" xmlns:ns0="http://xmlns.dmm.spms.pt/201310/RequestStructure">
+    <ns1:MessageHeader>
+        <ns2:De>
+            <ns2:Chave>
+                <ns2:Id>{ $ClientUser }</ns2:Id>
+                <ns2:Cifra><ns2:Codigo>1</ns2:Codigo></ns2:Cifra>
+            </ns2:Chave>
+        </ns2:De>
+        <ns2:EnviadoEm>{ fn:current-dateTime() }</ns2:EnviadoEm>
+        <ns2:ActivadoEm>{ fn:current-dateTime() }</ns2:ActivadoEm>
+        <ns2:ChavePedido>{ fn-bea:uuid() }</ns2:ChavePedido>
+    </ns1:MessageHeader>
+    <ns1:MessageBody>
+        <ns1:RequestBody>
+            <ns0:Service>
+                <ns0:ServiceURI>/RNU/ProcessarSituacaoUtilizador/1.00</ns0:ServiceURI>
+                <ns0:ServiceOperation>{ fn:concat('ClassificarUtentes', '_12c') }</ns0:ServiceOperation>
+            </ns0:Service>
+            <ns0:RequestPayload>{ $InputTmp/@* , $InputTmp/node() }</ns0:RequestPayload>
+            <ns0:ResponsePayload>{ $body/@* , $body/node() }</ns0:ResponsePayload>
+        </ns1:RequestBody>
+    </ns1:MessageBody>
+</ns1:RegistoDadosLogProcessRequest>]]></con1:xqueryText>
                                         </con4:expr>
                                     </con4:replace>
                                 </con6:outboundTransform>
