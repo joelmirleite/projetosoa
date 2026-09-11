@@ -132,6 +132,15 @@
                             </con4:actions>
                         </con4:case>
                         <con4:default>
+                            <con4:replace contents-only="true" varName="body">
+                                <con1:id>SetErrorMsg_Default</con1:id>
+                                <con4:location>
+                                    <con1:xpathText>./tns:ClassificarUtentesResponse/tns:MensagemResposta</con1:xpathText>
+                                </con4:location>
+                                <con4:expr>
+                                    <con1:xqueryText>fn:concat('Erro no processamento [', data($fault/ctx:errorCode), ']: ', data($fault/ctx:reason))</con1:xqueryText>
+                                </con4:expr>
+                            </con4:replace>
                             <con7:alert>
                                 <con1:id>AlertOnError</con1:id>
                                 <con7:destination ref="Rot-RNU-ProcessarSituacaoUtilizador/AlertDestinations/ProcessarSituacaoUtilizador"/>
