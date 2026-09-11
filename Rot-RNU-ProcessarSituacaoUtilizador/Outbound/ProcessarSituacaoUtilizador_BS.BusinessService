@@ -28,7 +28,7 @@
         <tran:provider-id>http</tran:provider-id>
         <tran:inbound>false</tran:inbound>
         <tran:URI weight="0">
-            <env:value>http://10.204.1.97:8011/Interno/RNU/ProcessarSituacaoUtilizador/1.00</env:value>
+            <env:value>http://webservices-osbi-dev.spms.min-saude.pt:8011/Interno/RNU/ProcessarSituacaoUtilizador/1.00</env:value>
         </tran:URI>
         <tran:outbound-properties>
             <tran:load-balancing-algorithm>round-robin</tran:load-balancing-algorithm>
