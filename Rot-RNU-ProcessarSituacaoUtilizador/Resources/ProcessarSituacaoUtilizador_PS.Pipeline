@@ -225,7 +225,7 @@
                         <con1:id>ValidarCredenciais</con1:id>
                         <con4:case>
                             <con4:condition>
-                                <con1:xqueryText>fn:not(data($header/oas:Security/oas:UsernameToken/oas:Username) = 'processarSituacaoUtilizador' and data($header/oas:Security/oas:UsernameToken/oas:Password) = 'processarSituacao123')</con1:xqueryText>
+                                <con1:xqueryText>fn:not(data($header/oas:Security/oas:UsernameToken/oas:Username) = 'processarSituacaoUtilizador' and data($header/oas:Security/oas:UsernameToken/oas:Password) = 'processarSituacaoUtilizador123')</con1:xqueryText>
                             </con4:condition>
                             <con4:actions>
                                 <con4:replace contents-only="true" varName="body">
