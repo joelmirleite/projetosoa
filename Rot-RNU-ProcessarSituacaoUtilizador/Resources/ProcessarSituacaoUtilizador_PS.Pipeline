@@ -133,12 +133,21 @@
                         </con4:case>
                         <con4:default>
                             <con4:replace contents-only="true" varName="body">
+                                <con1:id>SetErrorCode_Default</con1:id>
+                                <con4:location>
+                                    <con1:xpathText>./tns:ClassificarUtentesResponse/tns:CodigoResposta</con1:xpathText>
+                                </con4:location>
+                                <con4:expr>
+                                    <con1:xqueryText>string('100001049999')</con1:xqueryText>
+                                </con4:expr>
+                            </con4:replace>
+                            <con4:replace contents-only="true" varName="body">
                                 <con1:id>SetErrorMsg_Default</con1:id>
                                 <con4:location>
                                     <con1:xpathText>./tns:ClassificarUtentesResponse/tns:MensagemResposta</con1:xpathText>
                                 </con4:location>
                                 <con4:expr>
-                                    <con1:xqueryText>fn:concat('Erro no processamento [', data($fault/ctx:errorCode), ']: ', data($fault/ctx:reason))</con1:xqueryText>
+                                    <con1:xqueryText>fn:concat('Erro interno ao processar o pedido [', data($fault/ctx:errorCode), ']: ', data($fault/ctx:reason))</con1:xqueryText>
                                 </con4:expr>
                             </con4:replace>
                             <con7:alert>
@@ -233,6 +242,126 @@
                                 </con4:replace>
                                 <con1:reply>
                                     <con1:id>ReplyCredenciaisInvalidas</con1:id>
+                                </con1:reply>
+                            </con4:actions>
+                        </con4:case>
+                    </con4:ifThenElse>
+                </con:actions>
+            </con:stage>
+            <con:stage name="ValidarDados">
+                <con:context>
+                    <con1:varNsDecl namespace="http://igif.min-saude.pt/rnu/processarsituacaoutilizador" prefix="tns"/>
+                </con:context>
+                <con:actions>
+                    <con4:ifThenElse>
+                        <con1:id>ValidarCamposObrigatorios</con1:id>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>some $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente satisfies normalize-space(data($u/tns:NNU)) = ''</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetRespNNUNulo</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>.</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:CodigoResposta>{string('100001040001')}</tns:CodigoResposta>
+    <tns:MensagemResposta>{string('O campo NNU é obrigatório.')}</tns:MensagemResposta>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con1:reply>
+                                    <con1:id>ReplyNNUNulo</con1:id>
+                                </con1:reply>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>some $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente satisfies fn:not(fn:matches(normalize-space(data($u/tns:NNU)), '^[0-9]+$'))</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetRespNNUNaoNumerico</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>.</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:CodigoResposta>{string('100001040001')}</tns:CodigoResposta>
+    <tns:MensagemResposta>{string('O campo NNU deve conter apenas números.')}</tns:MensagemResposta>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con1:reply>
+                                    <con1:id>ReplyNNUNaoNumerico</con1:id>
+                                </con1:reply>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>some $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente satisfies normalize-space(data($u/tns:dataNascimento)) = ''</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetRespDataNascNula</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>.</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:CodigoResposta>{string('100001040002')}</tns:CodigoResposta>
+    <tns:MensagemResposta>{string('O campo dataNascimento é obrigatório.')}</tns:MensagemResposta>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con1:reply>
+                                    <con1:id>ReplyDataNascNula</con1:id>
+                                </con1:reply>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>some $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente satisfies fn:not(fn:matches(normalize-space(data($u/tns:dataNascimento)), '^[0-9][0-9][0-9][0-9]-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$'))</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetRespDataNascFormato</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>.</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:CodigoResposta>{string('100001040003')}</tns:CodigoResposta>
+    <tns:MensagemResposta>{string('O campo dataNascimento deve estar no formato yyyy-MM-dd.')}</tns:MensagemResposta>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con1:reply>
+                                    <con1:id>ReplyDataNascFormato</con1:id>
+                                </con1:reply>
+                            </con4:actions>
+                        </con4:case>
+                        <con4:case>
+                            <con4:condition>
+                                <con1:xqueryText>some $u in $body/tns:ClassificarUtentesRequest/tns:Utentes/tns:Utente satisfies normalize-space(data($u/tns:situacaoUtilizador)) = ''</con1:xqueryText>
+                            </con4:condition>
+                            <con4:actions>
+                                <con4:replace contents-only="true" varName="body">
+                                    <con1:id>SetRespSituacaoNula</con1:id>
+                                    <con4:location>
+                                        <con1:xpathText>.</con1:xpathText>
+                                    </con4:location>
+                                    <con4:expr>
+                                        <con1:xqueryText><![CDATA[<tns:ClassificarUtentesResponse xmlns:tns="http://igif.min-saude.pt/rnu/processarsituacaoutilizador">
+    <tns:CodigoResposta>{string('100001040004')}</tns:CodigoResposta>
+    <tns:MensagemResposta>{string('O campo situacaoUtilizador é obrigatório.')}</tns:MensagemResposta>
+</tns:ClassificarUtentesResponse>]]></con1:xqueryText>
+                                    </con4:expr>
+                                </con4:replace>
+                                <con1:reply>
+                                    <con1:id>ReplySituacaoNula</con1:id>
                                 </con1:reply>
                             </con4:actions>
                         </con4:case>
