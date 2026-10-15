@@ -176,7 +176,7 @@
     <ns1:MessageHeader>
         <ns2:De>
             <ns2:Chave>
-                <ns2:Id>{ data($header/oas:Security/oas:UsernameToken/oas:Username) }</ns2:Id>
+                <ns2:Id>ProcessarSituacaoUtilizador_Proxy</ns2:Id>
                 <ns2:Cifra><ns2:Codigo>1</ns2:Codigo></ns2:Cifra>
             </ns2:Chave>
         </ns2:De>
@@ -187,8 +187,8 @@
     <ns1:MessageBody>
         <ns1:RequestBody>
             <ns0:Service>
-                <ns0:ServiceURI>/RNU/ProcessarSituacaoUtilizador/1.00</ns0:ServiceURI>
-                <ns0:ServiceOperation>{ fn:concat('ClassificarUtentes', '_12c') }</ns0:ServiceOperation>
+                <ns0:ServiceURI>{ $inbound/ctx:transport/ctx:uri/text() }</ns0:ServiceURI>
+                <ns0:ServiceOperation>{ fn:concat('ProcessarSituacaoUtilizador_Proxy', '_12c') }</ns0:ServiceOperation>
             </ns0:Service>
             <ns0:RequestPayload>{ $InputTmp/@* , $InputTmp/node() }</ns0:RequestPayload>
             <ns0:ResponsePayload>{ $body/@* , $body/node() }</ns0:ResponsePayload>
@@ -434,7 +434,7 @@
         <ns1:RequestBody>
             <ns0:Service>
                 <ns0:ServiceURI>/RNU/ProcessarSituacaoUtilizador/1.00</ns0:ServiceURI>
-                <ns0:ServiceOperation>{ fn:concat('ClassificarUtentes', '_12c') }</ns0:ServiceOperation>
+                <ns0:ServiceOperation>{ fn:concat('ProcessarSituacaoUtilizador_Proxy', '_12c') }</ns0:ServiceOperation>
             </ns0:Service>
             <ns0:RequestPayload>{ $InputTmp/@* , $InputTmp/node() }</ns0:RequestPayload>
             <ns0:ResponsePayload>{ $body/@* , $body/node() }</ns0:ResponsePayload>
